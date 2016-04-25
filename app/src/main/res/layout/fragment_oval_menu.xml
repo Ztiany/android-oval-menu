@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#FF424242"
+              android:orientation="vertical">
+
+    <com.ztiany.ovalmenu.OvalMenu android:id="@+id/frag_oval_menu"
+                                  xmlns:android="http://schemas.android.com/apk/res/android"
+                                  android:layout_width="match_parent"
+                                  android:layout_height="0dp"
+                                  android:layout_weight="1">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/girl"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/girl"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/girl"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/girl"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/girl"/>
+    </com.ztiany.ovalmenu.OvalMenu>
+
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/frag_oval_menu_add_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="addChild"
+                android:textAllCaps="false"/>
+
+
+            <Button
+                android:id="@+id/frag_oval_menu_sub_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="removeChild"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/frag_oval_menu_remove_all_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="removeAll"
+                android:textAllCaps="false"/>
+
+            <Button
+                android:id="@+id/frag_oval_menu_add_long_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="长轴+"/>
+
+            <Button
+                android:id="@+id/frag_oval_menu_sub_long_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="长轴-"/>
+
+            <Button
+                android:id="@+id/frag_oval_menu_add_short_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="短轴+"/>
+
+            <Button
+                android:id="@+id/frag_oval_menu_sub_short_btn"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="短轴-"/>
+
+            <Button
+                android:id="@+id/frag_oval_menu_hide_show_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="显示/隐藏椭圆"/>
+
+
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>
