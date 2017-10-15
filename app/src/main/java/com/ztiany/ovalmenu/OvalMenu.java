@@ -27,7 +27,6 @@ import java.util.List;
 public class OvalMenu extends FrameLayout {
 
     //Debug/////////////////////////////////////////////////////////////////////////
-
     private boolean mIsDebug = true;
     private List<PointF> mDebugPoints;
     private int mScaledTouchSlop;
@@ -43,21 +42,25 @@ public class OvalMenu extends FrameLayout {
             }
         }
     }
-//Debug/////////////////////////////////////////////////////////////////////////
-
+    //Debug/////////////////////////////////////////////////////////////////////////
 
     private static final int INVALID_POINTER_ID = MotionEvent.INVALID_POINTER_ID;
+
     private int mActivePointerId;
     private boolean mIsBeginDrag;
-    private float mDownX, mDownY, mLastX, mLastY;
+
+    private float mLastX;
+    private float mLastY;
 
     private MenuScroller mMenuScroller;
 
+    //象限
     private static final int QUADRANT_ONE = 1;
     private static final int QUADRANT_TWO = 2;
     private static final int QUADRANT_THIRD = 3;
     private static final int QUADRANT_FOUR = 4;
-    private int mCurrentQuadrant;
+
+    private int mCurrentQuadrant;//当前象限
 
     public static final float MAX_FLING_ANGLE = 45;
     public static final float MIN_FLING_ANGLE = 15;
@@ -65,12 +68,11 @@ public class OvalMenu extends FrameLayout {
     private long mStartTime;
     private long mEndTime;
     private float mAddAngle;
-    private ChildProxy mChildProxyHead;
+
+    private ChildProxy mChildProxyHead;//子view
 
     private Paint mPaint;
     private static final String TAG = OvalMenu.class.getSimpleName();
-    private float mAAxis;//长轴长
-    private float mBAxis;//短轴长
     private final static int CIRCLE = 360;
     private OvalMath mOvalMath;
 
@@ -98,14 +100,11 @@ public class OvalMenu extends FrameLayout {
         mOvalMath = new OvalMath();
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setColor(Color.RED);
-        mPaint.setStrokeWidth(
-                (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getContext().getResources().getDisplayMetrics())
-        );
+        mPaint.setStrokeWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, getContext().getResources().getDisplayMetrics()));
         ViewConfiguration viewConfiguration = ViewConfiguration.get(getContext());
         mScaledTouchSlop = viewConfiguration.getScaledTouchSlop();
         mMenuScroller = new MenuScroller();
     }
-
 
     public void setDebug(boolean debug) {
         mIsDebug = debug;
@@ -131,24 +130,17 @@ public class OvalMenu extends FrameLayout {
         requestLayout();
     }
 
-
     @Override
     public void onViewAdded(View child) {
         addChild(child);
         resetChildren(false);
     }
 
-
     @Override
     public void removeView(View view) {
-
         removeChild(view);
         resetChildren(true);
-
-
         super.removeView(view);
-
-
     }
 
     @Override
@@ -156,24 +148,17 @@ public class OvalMenu extends FrameLayout {
         mChildProxyHead = null;
         resetChildren(true);
         super.removeAllViews();
-
     }
 
     @Override
     public void removeViewAt(int index) {
-
         removeChild(getChildAt(index));
         resetChildren(true);
-
         super.removeViewAt(index);
-
-
     }
-
 
     private void resetChildren(boolean remove) {
         int childCount = getChildCount();
-
         if (remove) {
             childCount--;
         }
@@ -184,14 +169,12 @@ public class OvalMenu extends FrameLayout {
         float angle = CIRCLE / childCount;
         int temp = 0;
         ChildProxy childProxy1 = mChildProxyHead;
-        Log.d(TAG, "childCount:" + childCount);
         while (childProxy1 != null) {
             childProxy1.setAngle(mInitAngle + temp * angle);
             Log.d(TAG, childProxy1.mAngle + "");
             temp++;
             childProxy1 = childProxy1.next;
         }
-
     }
 
 
@@ -215,7 +198,6 @@ public class OvalMenu extends FrameLayout {
 
 
     private void removeChild(View view) {
-
         ChildProxy target = mChildProxyHead;
         while (target != null) {
             if (target.child == view) {
@@ -224,19 +206,16 @@ public class OvalMenu extends FrameLayout {
             target = target.next;
         }
 
-
         if (target == null) {
             return;
         }
 
         if (target == mChildProxyHead) {
             ChildProxy childProxy = mChildProxyHead.next;
-
             mChildProxyHead.next = null;
             mChildProxyHead = childProxy;
             if (mChildProxyHead != null)
                 mChildProxyHead.previous = null;
-
             return;
         }
         if (target.next == null) {
@@ -257,9 +236,9 @@ public class OvalMenu extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         mCenterX = getMeasuredWidth() / 2;
         mCenterY = getMeasuredHeight() / 2;
-        mAAxis = mCenterX * mAAxisPercentByHalfWidth;
-        mBAxis = mAAxis * mBAxisPercentByAAxis;
-        mOvalMath.initSize(mAAxis, mBAxis, mCenterX, mCenterY);
+        float AAxis = mCenterX * mAAxisPercentByHalfWidth;
+        float BAxis = AAxis * mBAxisPercentByAAxis;
+        mOvalMath.initSize(AAxis, BAxis, mCenterX, mCenterY);
 
         if (mIsDebug && mOvalMath.isChanged) {
             int temp = 0;
@@ -286,7 +265,6 @@ public class OvalMenu extends FrameLayout {
                             childProxy.getSelfCenterY() + childProxy.child.getMeasuredHeight());
             childProxy = childProxy.next;
         }
-
     }
 
 
@@ -303,24 +281,20 @@ public class OvalMenu extends FrameLayout {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
-
         int action = MotionEventCompat.getActionMasked(event);
-
         if ((action == MotionEvent.ACTION_MOVE) && (mIsBeginDrag)) {
             return true;
         }
-
-
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
                 mAddAngle = 0;
                 mIsBeginDrag = false;
                 mStartTime = SystemClock.currentThreadTimeMillis();
                 int index = MotionEventCompat.getActionIndex(event);
-                mDownX = MotionEventCompat.getX(event, index);
-                mDownY = MotionEventCompat.getY(event, index);
-                mLastX = mDownX;
-                mLastY = mDownY;
+                float downX = MotionEventCompat.getX(event, index);
+                float downY = MotionEventCompat.getY(event, index);
+                mLastX = downX;
+                mLastY = downY;
                 mActivePointerId = MotionEventCompat.getPointerId(event, index);
                 break;
             }
@@ -328,7 +302,6 @@ public class OvalMenu extends FrameLayout {
 
                 break;
             }
-
             case MotionEvent.ACTION_MOVE: {
                 if (mActivePointerId == INVALID_POINTER_ID) {
                     return false;
@@ -361,7 +334,6 @@ public class OvalMenu extends FrameLayout {
                 break;
             }
         }
-
         return mIsBeginDrag;
     }
 
@@ -369,8 +341,6 @@ public class OvalMenu extends FrameLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         int action = MotionEventCompat.getActionMasked(event);
-
-
         switch (action) {
             case MotionEvent.ACTION_DOWN: {
                 int index = event.getActionIndex();
@@ -380,12 +350,12 @@ public class OvalMenu extends FrameLayout {
                 checkQuadRant(mLastX, mLastY);
                 break;
             }
+
             case MotionEvent.ACTION_POINTER_DOWN: {
                 break;
             }
 
             case MotionEvent.ACTION_MOVE: {
-
                 if (mActivePointerId == MotionEvent.INVALID_POINTER_ID) {
                     return false;
                 }
@@ -418,6 +388,7 @@ public class OvalMenu extends FrameLayout {
                 }
                 break;
             }
+
             case MotionEvent.ACTION_POINTER_UP: {
                 break;
             }
@@ -433,13 +404,11 @@ public class OvalMenu extends FrameLayout {
             }
         }
         return true;
-
     }
 
     private void startFiling(float speed) {
         mMenuScroller.startFling(speed);
     }
-
 
     private void refreshLayout(float start, float end) {
         float addAngle = 0;
@@ -454,7 +423,6 @@ public class OvalMenu extends FrameLayout {
             }
             case QUADRANT_THIRD: {
                 addAngle = (start - end);
-
                 break;
             }
             case QUADRANT_FOUR: {
@@ -489,7 +457,7 @@ public class OvalMenu extends FrameLayout {
         return mIsDebug;
     }
 
-    public class MenuScroller implements Runnable {
+    private class MenuScroller implements Runnable {
 
         private boolean mIsRunning;
         private float mCurrentSpeed;
@@ -528,7 +496,8 @@ public class OvalMenu extends FrameLayout {
     }
 
 
-    public class ChildProxy {
+    private class ChildProxy {
+
         PointF mPointF = new PointF();
         private float mAngle;
         View child;
@@ -544,7 +513,6 @@ public class OvalMenu extends FrameLayout {
 
         void setAngle(float angle) {
             mAngle = angle % 360;
-
             calcCoordinate();
             scaleSelf();
             bringToFrontSelf();
@@ -591,22 +559,18 @@ public class OvalMenu extends FrameLayout {
             mOvalMath.calcPoint(mAngle, mPointF);
         }
 
-
         void scaleSelf() {
             float scale = getScale();
             child.setScaleX(scale);
             child.setScaleY(scale);
         }
 
-
-        public void addAngle(float addAngle) {
+        void addAngle(float addAngle) {
             mAngle = (mAngle + addAngle) % 360;
             calcCoordinate();
             scaleSelf();
             bringToFrontSelf();
         }
-
-
     }
 
 }

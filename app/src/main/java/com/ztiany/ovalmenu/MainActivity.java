@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.act_oval_container_rl, OvalMenuFragment.newInstance(), "")
+                    .add(R.id.act_oval_container_rl, OvalMenuFragment.newInstance(), OvalMenuFragment.class.getName())
                     .commit();
         }
     }

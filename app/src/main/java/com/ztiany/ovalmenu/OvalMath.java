@@ -3,14 +3,8 @@ package com.ztiany.ovalmenu;
 import android.graphics.PointF;
 
 
-/**
- * Author Ztiany                   <br/>
- * Email ztiany3@gmail.com      <br/>
- * Date 2016-04-23 18:17      <br/>
- * Description：
- */
 public class OvalMath {
-    private static final String TAG = OvalMath.class.getSimpleName();
+
     private float mA;
     private float mB;
 
@@ -30,7 +24,6 @@ public class OvalMath {
             isChanged = false;
             return;
         }
-
         mA = a;
         mB = b;
         mCenterX = centerX;
@@ -46,15 +39,14 @@ public class OvalMath {
     /**
      * 根据触摸的位置，计算角度
      *
-     * @param xTouch
-     * @param yTouch
-     * @return
+     * @param xTouch x点
+     * @param yTouch y点
+     * @return 角度
      */
     public float getAngle(float xTouch, float yTouch) {
         double x = xTouch - (mCenterX);
         double y = yTouch - (mCenterY);
         return (float) (Math.asin(y / Math.hypot(x, y)) * 180 / Math.PI);
     }
-
 
 }

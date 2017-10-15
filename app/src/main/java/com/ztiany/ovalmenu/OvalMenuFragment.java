@@ -67,12 +67,10 @@ public class OvalMenuFragment extends Fragment implements View.OnClickListener {
             }
             case R.id.frag_oval_menu_add_short_btn: {
                 mOvalMenu.setBAxisPercentByAAxis(mOvalMenu.getBAxisPercentByAAxis() + 0.1F);
-
                 break;
             }
             case R.id.frag_oval_menu_sub_short_btn: {
                 mOvalMenu.setBAxisPercentByAAxis(mOvalMenu.getBAxisPercentByAAxis() - 0.1F);
-
                 break;
             }
             case R.id.frag_oval_menu_hide_show_btn: {
@@ -96,8 +94,6 @@ public class OvalMenuFragment extends Fragment implements View.OnClickListener {
                 break;
             }
         }
-
-
     }
 
     @Override
