@@ -12,12 +12,6 @@ import android.widget.FrameLayout;
 import java.util.Random;
 
 
-/**
- * Author Ztiany                   <br/>
- * Email ztiany3@gmail.com      <br/>
- * Date 2016-04-24 2:14      <br/>
- * Description：
- */
 public class OvalMenuFragment extends Fragment implements View.OnClickListener {
 
 
