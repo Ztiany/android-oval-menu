@@ -18,12 +18,7 @@ import android.widget.FrameLayout;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Author Ztiany                   <br/>
- * Email ztiany3@gmail.com      <br/>
- * Date 2016-04-23 18:06      <br/>
- * Description：
- */
+
 public class OvalMenu extends FrameLayout {
 
     //Debug/////////////////////////////////////////////////////////////////////////
